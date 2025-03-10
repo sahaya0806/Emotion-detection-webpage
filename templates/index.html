@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Fuzzy+Bubbles:wght@400;700&display=swap" rel="stylesheet">
+    <title>Emotion Detection</title>
+    <style>
+        /* Enhanced styling */
+        body {
+            background-image: url('../exponew2.jpg');         
+            background-attachment: fixed; 
+            background-size: cover; 
+            background-position: center;
+            background-repeat: no-repeat;  
+            color: #395cf4;
+            font-family: 'Fuzzy Bubbles', sans-serif;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            flex-direction: column;
+        }
+
+        button {
+            position: fixed;
+            left: 50%;
+            top: 52%;
+            padding: 0px 0px;
+            transform: translate(-50%, -50%);
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            background-color: rgba(98, 0, 234, 0); /* Fully transparent */
+            color: white;
+            transition: background-color 0.3s, transform 0.8s;
+            cursor: pointer;
+        }
+
+        button:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+    
+        @keyframes jiggle {
+            0% { transform: translateY(-50%) rotate(0deg); }
+            25% { transform: translateY(-50%) rotate(2deg); }
+            50% { transform: translateY(-50%) rotate(-2deg); }
+            75% { transform: translateY(-50%) rotate(2deg); }
+            100% { transform: translateY(-50%) rotate(0deg); }
+        }
+    </style>
+</head>
+<body>
+    <h1></h1>
+
+    <img src="../angrytext.png" alt="Angry Text" 
+        style="width: 250px; height: auto; position: fixed; top: 18.5%; left: 1%; transform: translateY(-50%); transition: transform 0.2s ease-in-out;" 
+        onmouseover="this.style.animation='jiggle 0.6s infinite ease-in-out';" 
+        onmouseout="this.style.animation='none';">
+
+    <img src="../neutraltext.png" alt="Neutral Text" 
+        style="width: 250px; height: auto; position: fixed; top: 14%; left: 82.5%; transform: translateY(-50%); transition: transform 0.2s ease-in-out;" 
+        onmouseover="this.style.animation='jiggle 0.6s infinite ease-in-out';" 
+        onmouseout="this.style.animation='none';">
+
+    <img src="../happytext.png" alt="Happy Text" 
+        style="width: 250px; height: auto; position: fixed; top: 80%; left: 1%; transform: translateY(-50%); opacity: 90%; transition: transform 0.2s ease-in-out;" 
+        onmouseover="this.style.animation='jiggle 0.6s infinite ease-in-out';" 
+        onmouseout="this.style.animation='none';">
+
+    <img src="../sadtext.png" alt="Sad Text" 
+        style="width: 250px; height: auto; position: fixed; top: 75%; left: 83%; transform: translateY(-50%); transition: transform 0.2s ease-in-out;" 
+        onmouseover="this.style.animation='jiggle 0.6s infinite ease-in-out';" 
+        onmouseout="this.style.animation='none';">
+    
+    <button id="detect-btn">
+        <img src="../brain4.png" alt="Detect Emotion" style="width: 240px; height: auto; opacity: 0.75;">
+    </button>
+
+    <script>
+        document.getElementById("detect-btn").addEventListener("click", () => {
+            // Send request to backend to detect emotion
+            fetch('http://127.0.0.1:5000/detect-emotion', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Detected emotion:', data.emotion);
+                
+                // Redirect to the appropriate webpage based on detected emotion
+                if (data.emotion === 'happy') {
+                    window.location.href = 'happy.html';
+                } else if (data.emotion === 'sad') {
+                    window.location.href = 'sad.html';
+                } else if (data.emotion === 'neutral') {
+                    window.location.href = 'neutral.html';
+                } else if (data.emotion === 'angry') {
+                    window.location.href = 'anger.html';
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
